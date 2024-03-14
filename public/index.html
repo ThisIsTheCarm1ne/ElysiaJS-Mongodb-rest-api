@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="/css/style.css" rel="stylesheet">
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+  </head>
+  <body x-data="{ addCityOpen: false, cityToUpdate: null }">
+    <button @click="addCityOpen = true">Add city</button>
+    <div x-data="{ cities: [] }" x-init="fetch('/cities').then(response => response.json()).then(data => { cities = data })">
+      <template x-for="(city, index) in cities" :key="index">
+        <div>
+          <h2 x-text="city.title"></h2>
+          <p>id: <span x-text="city._id"></span></p>
+          <p>First mentioned in: <span x-text="city.firstMentioned"></span></p>
+          <button class="removeBTN" @click="deleteCity(city._id)">Remove this city</button>
+          <button @click="cityToUpdate = city">Update this city</button>
+        </div>
+      </template>
+    </div>
+    <div x-show="cityToUpdate != null" class="backdrop">
+      <div @click.away="cityToUpdate = null" class="popup">
+        <form @submit.prevent="submitUpdateForm">
+          <label>
+            City Name:
+            <input type="text" x-model="cityName">
+          </label>
+          <label>
+            First Mentioned:
+            <input type="text" x-model="firstMentioned">
+          </label>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+    <div x-show="addCityOpen" class="backdrop">
+      <div @click.away="addCityOpen = false" class="popup">
+        <form @submit.prevent="submitForm">
+          <label>
+            City Name:
+            <input type="text" x-model="cityName">
+          </label>
+          <label>
+            First Mentioned:
+            <input type="text" x-model="firstMentioned">
+          </label>
+          <button type="submit">Submit</button>
+        </form>
+      </div>
+    </div>
+    <script>
+      function submitForm() {
+        fetch('/cities', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            title: cityName,
+            firstMentioned: firstMentioned
+          }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+          open = false;
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      }
+      function submitUpdateForm() {
+        console.log(cityToUpdate.id);
+        fetch('/cities/' + cityToUpdate.id, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            title: cityName,
+            firstMentioned: firstMentioned
+          }),
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+          open = false;
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      }
+      function deleteCity(id) {
+        console.log(id);
+        fetch('/cities/' + id, {
+          method: 'DELETE',
+        })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+      }
+    </script>
+  </body>
+</html>

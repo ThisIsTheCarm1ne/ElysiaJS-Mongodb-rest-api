@@ -1,15 +1,27 @@
-# Elysia with Bun runtime
+# Test app for a job position
 
-## Getting Started
-To get started with this template, simply paste this command into your terminal:
-```bash
-bun create elysia ./elysia-example
+build with: bun, elysia, mongodb, alpine.js.
+
+## List of endpoints:
+
+### Cities related:
+
+```
+put - /cities/:id
+delete - /cities/:id
+get - /cities
+post - /cities
 ```
 
-## Development
-To start the development server run:
-```bash
-bun run dev
+### User related:
+
+```
+get - /usersListOfCities
+post - /usersListOfCities
 ```
 
-Open http://localhost:3000/ with your browser to see the result.
+## Schemes:
+
+```
+/src/database/schemes/
+```

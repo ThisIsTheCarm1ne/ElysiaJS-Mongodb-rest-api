@@ -1,0 +1,40 @@
+.backdrop {
+  width: 100vw;
+  min-height: 100vh;
+  background: #0000008c;
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.popup {
+  width: min-content;
+  height: min-content;
+  padding: 2em;
+  background: white;
+}
+.popup > form {
+  display: flex;
+  flex-direction: column;
+  gap: 2em;
+}
+button {
+  background: 0;
+  border: 2px solid grey;
+  border-radius: 10px;
+  padding: 0.5em;
+}
+.removeBTN {
+  background: crimson;
+  border: 0;
+}
+button:hover {
+  background-color: #e3e3e3;
+  cursor: pointer;
+}
+.removeBTN:hover {
+  background-color: #a91531;
+  cursor: pointer;
+}
